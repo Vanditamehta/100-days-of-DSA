@@ -23,7 +23,6 @@ Output:
 
 Explanation: Insert 3 at position 3, elements [4,5,6] shift right*/
 #include <stdio.h>
-
 int main() 
 {
     int n, pos, x;
@@ -47,6 +46,5 @@ int main()
         printf("%d ", arr[i]);
     }
     printf("\n");
-
-    return 0;
+     return 0;
 }
