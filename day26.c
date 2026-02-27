@@ -1,112 +1,64 @@
+/*Problem: Doubly Linked List Insertion and Traversal - Implement using linked list with dynamic memory allocation.
+
+Input:
+- First line: integer n
+- Second line: n space-separated integers
+
+Output:
+- Print the linked list elements in forward order, space-separated
+
+Example:
+Input:
+5
+10 20 30 40 50
+
+Output:
+10 20 30 40 50
+
+Explanation:
+Each node has data, next, prev. Insert nodes sequentially, traverse from head using next pointer.*/
+#include <stdio.h>
 #include <stdlib.h>
 
-/* Node structure */
+// Define structure for Doubly Linked List Node
 struct Node {
-    int val;
+    int data;
     struct Node* next;
+    struct Node* prev;
 };
 
-typedef struct {
-    struct Node* head;   // dummy head
-    int size;
-} MyLinkedList;
+int main() {
+    int n, i, value;
 
+    scanf("%d", &n);
 
-/* ===== Function Prototypes ===== */
-MyLinkedList* myLinkedListCreate();
-int myLinkedListGet(MyLinkedList* obj, int index);
-void myLinkedListAddAtHead(MyLinkedList* obj, int val);
-void myLinkedListAddAtTail(MyLinkedList* obj, int val);
-void myLinkedListAddAtIndex(MyLinkedList* obj, int index, int val);
-void myLinkedListDeleteAtIndex(MyLinkedList* obj, int index);
-void myLinkedListFree(MyLinkedList* obj);
+    struct Node *head = NULL, *temp = NULL, *newNode = NULL;
 
+    for(i = 0; i < n; i++) {
+        scanf("%d", &value);
 
-/* ===== Implementation ===== */
+        // Allocate memory dynamically
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+        newNode->prev = NULL;
 
-/* Create linked list */
-MyLinkedList* myLinkedListCreate() {
-    MyLinkedList* obj = (MyLinkedList*)malloc(sizeof(MyLinkedList));
-    
-    obj->head = (struct Node*)malloc(sizeof(struct Node)); // dummy node
-    obj->head->next = NULL;
-    obj->size = 0;
-
-    return obj;
-}
-
-
-/* Get value at index */
-int myLinkedListGet(MyLinkedList* obj, int index) {
-    if(index < 0 || index >= obj->size)
-        return -1;
-
-    struct Node* curr = obj->head->next;
-    for(int i = 0; i < index; i++)
-        curr = curr->next;
-
-    return curr->val;
-}
-
-
-/* Add at head */
-void myLinkedListAddAtHead(MyLinkedList* obj, int val) {
-    myLinkedListAddAtIndex(obj, 0, val);
-}
-
-
-/* Add at tail */
-void myLinkedListAddAtTail(MyLinkedList* obj, int val) {
-    myLinkedListAddAtIndex(obj, obj->size, val);
-}
-
-
-/* Add at index */
-void myLinkedListAddAtIndex(MyLinkedList* obj, int index, int val) {
-    if(index < 0 || index > obj->size)
-        return;
-
-    struct Node* prev = obj->head;
-
-    for(int i = 0; i < index; i++)
-        prev = prev->next;
-
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->val = val;
-    newNode->next = prev->next;
-
-    prev->next = newNode;
-    obj->size++;
-}
-
-
-/* Delete at index */
-void myLinkedListDeleteAtIndex(MyLinkedList* obj, int index) {
-    if(index < 0 || index >= obj->size)
-        return;
-
-    struct Node* prev = obj->head;
-
-    for(int i = 0; i < index; i++)
-        prev = prev->next;
-
-    struct Node* temp = prev->next;
-    prev->next = temp->next;
-    free(temp);
-
-    obj->size--;
-}
-
-
-/* Free entire list */
-void myLinkedListFree(MyLinkedList* obj) {
-    struct Node* curr = obj->head;
-
-    while(curr != NULL) {
-        struct Node* temp = curr;
-        curr = curr->next;
-        free(temp);
+        if(head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            newNode->prev = temp;
+            temp = newNode;
+        }
     }
 
-    free(obj);
+    // Traverse in forward direction
+    temp = head;
+    while(temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+
+    return 0;
 }
